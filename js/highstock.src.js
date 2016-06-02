@@ -2,7 +2,7 @@
 // @compilation_level SIMPLE_OPTIMIZATIONS
 
 /**
- * @license Highstock JS v4.2.5-modified (2016-06-01)
+ * @license Highstock JS v4.2.5-modified (2016-06-02)
  *
  * (c) 2009-2016 Torstein Honsi
  *
@@ -19121,7 +19121,9 @@
         pan: function (e, panning) {
 
             var chart = this,
+                chartOptions = chart.options.chart,
                 hoverPoints = chart.hoverPoints,
+                panType,
                 doRedraw;
 
             // remove active points for shared tooltip
@@ -19131,7 +19133,17 @@
                 });
             }
 
-            each(panning === 'xy' ? [1, 0] : [1], function (isX) { // xy is used in maps
+            if(panning === true && chartOptions.zoomType) {
+                panning = chartOptions.zoomType;
+            }
+
+            if(panning === 'xy') {
+                panType = [1, 0];
+            } else {
+                panType = panning === 'y' ? [0] : [1];
+            }
+
+            each(panType, function (isX) { // xy is used in maps
                 var axis = chart[isX ? 'xAxis' : 'yAxis'][0],
                     horiz = axis.horiz,
                     mousePos = e[horiz ? 'chartX' : 'chartY'],
@@ -20279,7 +20291,7 @@
      * End ordinal axis logic                                                   *
      *****************************************************************************/
     /**
-     * Highstock JS v4.2.5-modified (2016-06-01)
+     * Highstock JS v4.2.5-modified (2016-06-02)
      * Highcharts Broken Axis module
      * 
      * License: www.highcharts.com/license
